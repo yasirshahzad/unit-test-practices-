@@ -10,3 +10,9 @@ export function fizzBuzz(n) {
   if (n % 5 === 0) return "Buzz";
   return n.toString();
 }
+
+export function fictorial(n) {
+  if (n == 1 || n == 0) return 1;
+
+  return n * fictorial(n - 1);
+}
