@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { max } from "./../intro";
+import { fizzBuzz, max } from "./../intro";
 
 describe("max", () => {
   it("should return the first argument if argument 1 is greater than argument 2", () => {
@@ -27,5 +27,22 @@ describe("max", () => {
     const b = 5;
 
     expect(max(a, b)).toBe(a);
+  });
+});
+
+describe("fizzBuzz", () => {
+  it("should return FizzBuzz if the number is divisible by both 3 and 5", () => {
+    const n = 45;
+    expect(fizzBuzz(n)).toBe("FizzBuzz");
+  });
+
+  it("should return Fizz if the number is divisble by 3 only", () => {
+    const n = 9;
+    expect(fizzBuzz(n)).toBe("Fizz");
+  });
+
+  it("should return Buzz if the number is divisible by 5 only", () => {
+    const n = 20;
+    expect(fizzBuzz(n)).toBe("Buzz");
   });
 });
