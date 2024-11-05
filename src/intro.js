@@ -16,3 +16,7 @@ export function fictorial(n) {
 
   return n * fictorial(n - 1);
 }
+
+export function getName(name, age) {
+  return { name, age };
+}

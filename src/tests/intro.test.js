@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { fictorial, fizzBuzz, max } from "./../intro";
+import { fictorial, fizzBuzz, getName, max } from "./../intro";
 
 describe("max", () => {
   it("should return the first argument if argument 1 is greater than argument 2", () => {
@@ -52,5 +52,13 @@ describe("fictorial", () => {
     const n = 5;
 
     expect(fictorial(n)).toBe(120);
+  });
+});
+
+describe("getName", () => {
+  it("should return an object with name and age", () => {
+    const result = getName("John Doe", 30);
+    expect(result).toEqual({ name: "John Doe", age: 30 });
+    // expect(result).toMatchObject({ name: "John Doe", age: 30 });
   });
 });
