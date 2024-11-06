@@ -1,5 +1,10 @@
 import { it, expect, describe } from "vitest";
-import { calculateDiscount, getCoupons, validateUserInput } from "../core";
+import {
+  calculateDiscount,
+  getCoupons,
+  isPriceInRange,
+  validateUserInput,
+} from "../core";
 
 describe("getCoupons", () => {
   it("should return a list of coupons", () => {
@@ -78,5 +83,22 @@ describe("validateUserInput", () => {
   it("should return invalid username and invalid age when username and password are not valid", () => {
     expect(validateUserInput("", null)).toMatch(/invalid username/i);
     expect(validateUserInput("", null)).toMatch(/invalid age/i);
+  });
+});
+
+describe("isPriceInRange", () => {
+  it("should return true when price is in range", () => {
+    expect(isPriceInRange(50, 0, 100)).toBe(true);
+  });
+
+  it("should return true when price is at boundary", () => {
+    expect(isPriceInRange(0, 0, 100)).toBe(true);
+    expect(isPriceInRange(100, 0, 100)).toBe(true);
+  });
+
+  it("should return false when price is not in range", () => {
+    expect(isPriceInRange(-1, 0, 100)).toBe(false);
+    expect(isPriceInRange(101, 0, 100)).toBe(false);
+    expect(isPriceInRange(null, 0, 100)).toBe(false);
   });
 });

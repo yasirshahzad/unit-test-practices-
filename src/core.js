@@ -47,6 +47,13 @@ export function validateUserInput(username, age) {
 
 // Lesson: Boundary testing
 export function isPriceInRange(price, min, max) {
+  if (
+    typeof price !== "number" ||
+    typeof min !== "number" ||
+    typeof max !== "number"
+  ) {
+    return false;
+  }
   return price >= min && price <= max;
 }
 
