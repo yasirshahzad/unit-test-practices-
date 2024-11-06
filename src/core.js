@@ -62,6 +62,8 @@ export function isValidUsername(username) {
   const minLength = 5;
   const maxLength = 15;
 
+  if (!username) return false;
+
   return username.length >= minLength && username.length <= maxLength;
 }
 
@@ -71,6 +73,10 @@ export function canDrive(age, countryCode) {
     US: 16,
     UK: 17,
   };
+
+  if (typeof age !== "number") {
+    return "Invalid age";
+  }
 
   if (!legalDrivingAge[countryCode]) {
     return "Invalid country code";

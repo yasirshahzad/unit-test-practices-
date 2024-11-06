@@ -4,6 +4,8 @@ import {
   getCoupons,
   isPriceInRange,
   validateUserInput,
+  isValidUsername,
+  canDrive,
 } from "../core";
 
 describe("getCoupons", () => {
@@ -101,4 +103,42 @@ describe("isPriceInRange", () => {
     expect(isPriceInRange(101, 0, 100)).toBe(false);
     expect(isPriceInRange(null, 0, 100)).toBe(false);
   });
+});
+
+describe("isValidUsername", () => {
+  it("should return true when username is valid", () => {
+    expect(isValidUsername("Yasir")).toBe(true);
+  });
+
+  it("should return false when username is not valid", () => {
+    expect(isValidUsername("Y")).toBe(false);
+    expect(isValidUsername("Y".repeat(256))).toBe(false);
+  });
+
+  it("should return false when username is not string", () => {
+    expect(isValidUsername(null)).toBe(false);
+  });
+});
+
+// parameterized test
+// https://vitest.dev/guide/parameterized.html
+
+describe("canDrive", () => {
+  const testCases = [
+    { age: 15, country: "UK", expected: false },
+    { age: 17, country: "UK", expected: true },
+    { age: 18, country: "UK", expected: true },
+    { age: 15, country: "US", expected: false },
+    { age: 16, country: "US", expected: true },
+    { age: 17, country: "US", expected: true },
+    { age: 15, country: "CA", expected: "Invalid country code" },
+    { age: "US", country: "US", expected: "Invalid age" },
+  ];
+
+  it.each(testCases)(
+    "should return $expected when country is $country and age is $age",
+    ({ age, country, expected }) => {
+      expect(canDrive(age, country)).toBe(expected);
+    }
+  );
 });
