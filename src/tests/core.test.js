@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, beforeEach } from "vitest";
 import {
   calculateDiscount,
   getCoupons,
@@ -6,6 +6,8 @@ import {
   validateUserInput,
   isValidUsername,
   canDrive,
+  fetchData,
+  Stack,
 } from "../core";
 
 describe("getCoupons", () => {
@@ -122,7 +124,6 @@ describe("isValidUsername", () => {
 
 // parameterized test
 // https://vitest.dev/guide/parameterized.html
-
 describe("canDrive", () => {
   const testCases = [
     { age: 15, country: "UK", expected: false },
@@ -141,4 +142,64 @@ describe("canDrive", () => {
       expect(canDrive(age, country)).toBe(expected);
     }
   );
+});
+
+// testing async function
+describe("fetchData", () => {
+  it("should return array of data", async () => {
+    const result = await fetchData();
+
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toBeGreaterThan(0);
+  });
+});
+
+describe("test stack", () => {
+  const stack = new Stack();
+
+  beforeEach(() => {
+    stack.clear();
+  });
+
+  it("should be empty", () => {
+    expect(stack.isEmpty()).toBe(true);
+  });
+
+  it("should push the elements in the stack ", () => {
+    stack.push(1);
+    stack.push(2);
+    stack.push(4);
+
+    expect(stack.size()).toBe(3);
+    expect(stack.peek()).toBe(4);
+  });
+
+  it("should pop the elements from the stack", () => {
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    expect(stack.pop()).toBe(3);
+    expect(stack.pop()).toBe(2);
+    expect(stack.pop()).toBe(1);
+    expect(stack.isEmpty()).toBe(true);
+  });
+
+  it("should clear the stack", () => {
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    stack.clear();
+
+    expect(stack.isEmpty()).toBe(true);
+  });
+
+  it("should throw an error when trying to pop an empty stack", () => {
+    expect(() => stack.pop()).toThrowError("Stack is empty");
+  });
+
+  it("should throw an error when trying to peek an empty stack", () => {
+    expect(() => stack.peek()).toThrowError("Stack is empty");
+  });
 });

@@ -116,6 +116,7 @@ export class Stack {
     if (this.isEmpty()) {
       throw new Error("Stack is empty");
     }
+
     return this.items[this.items.length - 1];
   }
 
