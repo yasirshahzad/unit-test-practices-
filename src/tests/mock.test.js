@@ -10,6 +10,7 @@ import {
 import {
   getPriceInCurrency,
   getShippingInfo,
+  isOnline,
   login,
   renderPage,
   signUp,
@@ -174,3 +175,15 @@ describe("login", () => {
 // * Remember
 // Use mocks for mocking external dependencies, services, db etc
 // Use spies for mocking internal functions
+
+describe("isOnline", () => {
+  it("should return true when online", () => {
+    vi.setSystemTime("2024-11-10 08:00");
+    expect(isOnline()).toBe(true);
+  });
+
+  it("should return false when time outside business hours", () => {
+    vi.setSystemTime("2024-11-10 05:01");
+    expect(isOnline()).toBe(false);
+  });
+});
