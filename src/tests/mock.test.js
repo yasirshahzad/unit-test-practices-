@@ -2,6 +2,7 @@ import { vi, it, expect, describe } from "vitest";
 import { getPriceInCurrency } from "../mocking";
 import { getExchangeRate } from "../libs/currency";
 
+// mocking whole module
 vi.mock("../libs/currency.js");
 
 describe("testing mocking", () => {
