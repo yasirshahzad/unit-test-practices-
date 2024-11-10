@@ -1,4 +1,12 @@
-import { vi, it, expect, describe } from "vitest";
+import {
+  vi,
+  it,
+  expect,
+  describe,
+  beforeAll,
+  beforeEach,
+  afterEach,
+} from "vitest";
 import {
   getPriceInCurrency,
   getShippingInfo,
@@ -162,3 +170,7 @@ describe("login", () => {
     );
   });
 });
+
+// * Remember
+// Use mocks for mocking external dependencies, services, db etc
+// Use spies for mocking internal functions
