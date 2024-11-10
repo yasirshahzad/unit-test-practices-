@@ -3,12 +3,14 @@ import {
   getPriceInCurrency,
   getShippingInfo,
   renderPage,
+  signUp,
   submitOrder,
 } from "../mocking";
 import { getExchangeRate } from "../libs/currency";
 import { getShippingQuote } from "../libs/shipping";
 import { trackPageView } from "../libs/analytics";
 import { charge } from "../libs/payment";
+import { sendEmail } from "../libs/email";
 
 // mocking whole module
 vi.mock("../libs/currency.js");
@@ -16,6 +18,18 @@ vi.mock("../libs/shipping.js");
 vi.mock("../libs/analytics.js");
 vi.mock("../libs/analytics.js");
 vi.mock("../libs/payment.js");
+
+// partial module mocking
+vi.mock("../libs/email.js", async (original) => {
+  const originalModuleFuncs = await original();
+
+  const mockedModule = {
+    ...originalModuleFuncs,
+    sendEmail: vi.fn(),
+  };
+
+  return mockedModule;
+});
 
 describe("testing mocking", () => {
   it("should return ok", () => {
@@ -112,5 +126,22 @@ describe("submitOrder", () => {
     await submitOrder({ totalAmount: 100 }, { creditCardNumber: "1234" });
 
     expect(charge).toHaveBeenCalledWith({ creditCardNumber: "1234" }, 100);
+  });
+});
+
+describe("signup", () => {
+  it("should return false when email is not valid.", async () => {
+    const results = await signUp("a");
+    expect(results).toBe(false);
+  });
+
+  it("should return true when email is valid.", async () => {
+    const results = await signUp("a@b.com");
+    expect(results).toBe(true);
+  });
+
+  it("should call sendEmail", async () => {
+    await signUp("a@b.com");
+    expect(sendEmail).toHaveBeenCalledWith("a@b.com", "Welcome aboard!");
   });
 });
