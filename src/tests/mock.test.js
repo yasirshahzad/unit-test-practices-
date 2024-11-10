@@ -1,13 +1,21 @@
 import { vi, it, expect, describe } from "vitest";
-import { getPriceInCurrency, getShippingInfo, renderPage } from "../mocking";
+import {
+  getPriceInCurrency,
+  getShippingInfo,
+  renderPage,
+  submitOrder,
+} from "../mocking";
 import { getExchangeRate } from "../libs/currency";
 import { getShippingQuote } from "../libs/shipping";
 import { trackPageView } from "../libs/analytics";
+import { charge } from "../libs/payment";
 
 // mocking whole module
 vi.mock("../libs/currency.js");
 vi.mock("../libs/shipping.js");
 vi.mock("../libs/analytics.js");
+vi.mock("../libs/analytics.js");
+vi.mock("../libs/payment.js");
 
 describe("testing mocking", () => {
   it("should return ok", () => {
@@ -72,5 +80,37 @@ describe("renderPage", () => {
     await renderPage();
 
     expect(trackPageView).toHaveBeenCalledWith("/home");
+  });
+});
+
+describe("submitOrder", () => {
+  it("should return success", async () => {
+    vi.mocked(charge).mockReturnValue({ status: "success" });
+
+    const results = await submitOrder(
+      { totalAmount: 100 },
+      { creditCardNumber: "1234" }
+    );
+
+    console.log("results", results);
+
+    expect(results.success).toBe(true);
+  });
+
+  it("should return error", async () => {
+    vi.mocked(charge).mockReturnValue({ status: "failed" });
+
+    const results = await submitOrder(
+      { totalAmount: 100 },
+      { creditCardNumber: "1234" }
+    );
+
+    expect(results).toEqual({ success: false, error: "payment_error" });
+  });
+
+  it("should call charge function", async () => {
+    await submitOrder({ totalAmount: 100 }, { creditCardNumber: "1234" });
+
+    expect(charge).toHaveBeenCalledWith({ creditCardNumber: "1234" }, 100);
   });
 });
