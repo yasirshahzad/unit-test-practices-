@@ -1,11 +1,13 @@
 import { vi, it, expect, describe } from "vitest";
-import { getPriceInCurrency, getShippingInfo } from "../mocking";
+import { getPriceInCurrency, getShippingInfo, renderPage } from "../mocking";
 import { getExchangeRate } from "../libs/currency";
 import { getShippingQuote } from "../libs/shipping";
+import { trackPageView } from "../libs/analytics";
 
 // mocking whole module
 vi.mock("../libs/currency.js");
 vi.mock("../libs/shipping.js");
+vi.mock("../libs/analytics.js");
 
 describe("testing mocking", () => {
   it("should return ok", () => {
@@ -55,5 +57,20 @@ describe("getShippingInfo", () => {
 
     // output: Shipping Cost: $${quote.cost} (${quote.estimatedDays} Days)
     expect(result).toMatch(/Shipping Cost: \$10 \(2 Days\)/i);
+  });
+});
+
+// interaction testing, either function is called or not.
+describe("renderPage", () => {
+  it("should return the content", async () => {
+    const results = await renderPage();
+
+    expect(results).match(/content/i);
+  });
+
+  it("should call the analytics", async () => {
+    await renderPage();
+
+    expect(trackPageView).toHaveBeenCalledWith("/home");
   });
 });
