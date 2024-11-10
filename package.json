@@ -8,10 +8,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@vitest/coverage-v8": "2.1.4",
+    "prettier": "^3.3.3",
     "vite": "^5.0.0",
     "vitest": "^2.1.4"
   },

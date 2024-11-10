@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite'
 
 defineConfig({
   test: {
     clearMocks: true,
   },
-});
+})
